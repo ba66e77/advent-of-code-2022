@@ -40,7 +40,8 @@ Find the item type that corresponds to the badges of each three-Elf group. What 
 
 
 """
-import string
+from string import ascii_letters
+
 
 # Given a string of letters, split it in half and return two lists of letters.
 def splitContents(contents: str) -> tuple:
@@ -67,7 +68,7 @@ def findDuplicatedContents(compartment1: list, compartment2: list) -> str:
 # Get the numeric priority value of a given letter.
 def getPriorityOfLetter(letter: str) -> int:
     # string.ascii_letters has lower and upper as string, 0 indexed
-    return string.ascii_letters.find(letter) + 1
+    return ascii_letters.find(letter) + 1
 
 
 # Split data into groups for part 2.
