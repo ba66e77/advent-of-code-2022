@@ -84,10 +84,9 @@ def getGroups(data: list, groupSize: int = 3) -> list:
 
 # find the shared letter between members of a group.
 def calculateBadge(group: list) -> str:
-    # @todo: make this work for varying group sizes. This only works with groups of 3, currenlty.
     sets = [set(member) for member in group]
 
-    dups = sets[0] & sets[1] & sets[2]
+    dups = set.intersection(*sets)
 
     if len(dups) != 1:
         raise Exception(f"Duplicates != 1: {dups}")
