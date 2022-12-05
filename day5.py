@@ -6,8 +6,11 @@ Part 1: After the rearrangement procedure completes, what crate ends up on top o
 Part 2: Moving multiple crates in a step should preserve the order of the crates.
 
 
-Part 1 solution is commented out in the moveCrate function. Uncomment that and comment out the marked part 2 blcck if
+Part 1 solution is commented out in the moveCrate function. Uncomment that and comment out the marked part 2 block if
  you want to run Part 1.
+
+Caveat: Instead of writing code to read the two different parts of the input file, I hand cut them into two separate
+ files. Maybe it's cheating, but ... meh.
 
 """
 import re
