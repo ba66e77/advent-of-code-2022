@@ -31,3 +31,214 @@ Part 1: Find the signal strength during the 20th, 60th, 100th, 140th, 180th, and
  six signal strengths?
 
 """
+
+class CRT:
+
+    def __init__(self, commandList):
+        self.register = {1:1}
+        self.x = 1
+        self.cycle = 0
+        self.commandList = commandList
+        self.awaited = {}
+
+        while self.commandList:
+            self.tick()
+
+    def tick(self):
+        cmd = self.commandList.pop(0)
+        self.__processCommand(cmd)
+
+    def __processCommand(self,cmd: str):
+        match cmd[0:4]:
+            case 'noop':
+                self.__incrementCycle()
+            case 'addx':
+                self.__incrementCycle()
+                self.__runAddX(int(cmd.split()[1]))
+            case _:
+                raise Exception(f'Unexpected command: {cmd}')
+
+    def __runAddX(self, value: int):
+        self.__incrementCycle()
+        self.register[self.cycle] = self.x
+        self.x += value
+
+    def __incrementCycle(self):
+        self.cycle += 1
+        self.register[self.cycle] = self.x
+
+
+def part1(data):
+    system = CRT(data)
+    cycleRegistry = system.register
+    print(system.register)
+    totalSignalStrength = 0
+    for c in [20, 60, 100, 140, 180, 220]:
+        signalStrength = c * cycleRegistry[c]
+        print(f"Cycle {c} has x of {cycleRegistry[c]}: {signalStrength}")
+        totalSignalStrength += signalStrength
+
+    print(f"Part 1: Total signal strength = {totalSignalStrength}")
+
+
+if __name__ == '__main__':
+    # data = [
+    #     'noop',
+    #     'addx 3',
+    #     'addx -5',
+    # ]
+
+    # data = [
+    #     'addx 15',
+    #     'addx -11',
+    #     'addx 6',
+    #     'addx -3',
+    #     'addx 5',
+    #     'addx -1',
+    #     'addx -8',
+    #     'addx 13',
+    #     'addx 4',
+    #     'noop',
+    #     'addx -1',
+    #     'addx 5',
+    #     'addx -1',
+    #     'addx 5',
+    #     'addx -1',
+    #     'addx 5',
+    #     'addx -1',
+    #     'addx 5',
+    #     'addx -1',
+    #     'addx -35',
+    #     'addx 1',
+    #     'addx 24',
+    #     'addx -19',
+    #     'addx 1',
+    #     'addx 16',
+    #     'addx -11',
+    #     'noop',
+    #     'noop',
+    #     'addx 21',
+    #     'addx -15',
+    #     'noop',
+    #     'noop',
+    #     'addx -3',
+    #     'addx 9',
+    #     'addx 1',
+    #     'addx -3',
+    #     'addx 8',
+    #     'addx 1',
+    #     'addx 5',
+    #     'noop',
+    #     'noop',
+    #     'noop',
+    #     'noop',
+    #     'noop',
+    #     'addx -36',
+    #     'noop',
+    #     'addx 1',
+    #     'addx 7',
+    #     'noop',
+    #     'noop',
+    #     'noop',
+    #     'addx 2',
+    #     'addx 6',
+    #     'noop',
+    #     'noop',
+    #     'noop',
+    #     'noop',
+    #     'noop',
+    #     'addx 1',
+    #     'noop',
+    #     'noop',
+    #     'addx 7',
+    #     'addx 1',
+    #     'noop',
+    #     'addx -13',
+    #     'addx 13',
+    #     'addx 7',
+    #     'noop',
+    #     'addx 1',
+    #     'addx -33',
+    #     'noop',
+    #     'noop',
+    #     'noop',
+    #     'addx 2',
+    #     'noop',
+    #     'noop',
+    #     'noop',
+    #     'addx 8',
+    #     'noop',
+    #     'addx -1',
+    #     'addx 2',
+    #     'addx 1',
+    #     'noop',
+    #     'addx 17',
+    #     'addx -9',
+    #     'addx 1',
+    #     'addx 1',
+    #     'addx -3',
+    #     'addx 11',
+    #     'noop',
+    #     'noop',
+    #     'addx 1',
+    #     'noop',
+    #     'addx 1',
+    #     'noop',
+    #     'noop',
+    #     'addx -13',
+    #     'addx -19',
+    #     'addx 1',
+    #     'addx 3',
+    #     'addx 26',
+    #     'addx -30',
+    #     'addx 12',
+    #     'addx -1',
+    #     'addx 3',
+    #     'addx 1',
+    #     'noop',
+    #     'noop',
+    #     'noop',
+    #     'addx -9',
+    #     'addx 18',
+    #     'addx 1',
+    #     'addx 2',
+    #     'noop',
+    #     'noop',
+    #     'addx 9',
+    #     'noop',
+    #     'noop',
+    #     'noop',
+    #     'addx -1',
+    #     'addx 2',
+    #     'addx -37',
+    #     'addx 1',
+    #     'addx 3',
+    #     'noop',
+    #     'addx 15',
+    #     'addx -21',
+    #     'addx 22',
+    #     'addx -6',
+    #     'addx 1',
+    #     'noop',
+    #     'addx 2',
+    #     'addx 1',
+    #     'noop',
+    #     'addx -10',
+    #     'noop',
+    #     'noop',
+    #     'addx 20',
+    #     'addx 1',
+    #     'addx 2',
+    #     'addx 2',
+    #     'addx -6',
+    #     'addx -11',
+    #     'noop',
+    #     'noop',
+    #     'noop',
+    # ]
+
+    inFile = open('./inputData/day10', 'r')
+    data = [line.strip() for line in inFile]
+    inFile.close()
+
+    part1(data)
