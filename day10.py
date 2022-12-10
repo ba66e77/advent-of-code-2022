@@ -30,6 +30,17 @@ signal strength: the cycle number multiplied by the value of the X register
 Part 1: Find the signal strength during the 20th, 60th, 100th, 140th, 180th, and 220th cycles. What is the sum of these
  six signal strengths?
 
+Part 2: Render the image given by your program. What eight capital letters appear on your CRT?
+
+the X register controls the horizontal position of a sprite. Specifically, the sprite is 3 pixels wide, and the X
+register sets the horizontal position of the middle of that sprite
+
+You count the pixels on the CRT: 40 wide and 6 high. This CRT screen draws the top row of pixels left-to-right, then the
+ row below that, and so on. The left-most pixel in each row is in position 0, and the right-most pixel in each row is in position 39.
+
+the CRT draws a single pixel during each cycle
+
+
 """
 
 class CRT:
@@ -79,6 +90,41 @@ def part1(data):
         totalSignalStrength += signalStrength
 
     print(f"Part 1: Total signal strength = {totalSignalStrength}")
+
+
+class Renderer:
+
+    def __init__(self, spriteCenterLocations: dict[int:int]):
+        self.width = 40
+        self.height = 6
+
+        self.spriteCenterLocations = spriteCenterLocations
+
+    def render(self):
+        for h in range(0, self.height):
+            rowRender = ''
+            for w in range(0, self.width):
+                rowRender += self.getPixel(h, w)
+            print(rowRender)
+
+    def getPixel(self, row: int, column: int) -> str:
+
+        cycleNumber = (row * self.width) + (column + 1)
+        pixelNumber = column
+        spriteCenter = self.spriteCenterLocations[cycleNumber]
+        if pixelNumber in range(spriteCenter-1, spriteCenter+2):
+            return '#'
+        else:
+            return '.'
+
+
+def part2(data):
+    system = CRT(data)
+    cycleRegistry = system.register
+
+    renderer = Renderer(cycleRegistry)
+    renderer.render()
+
 
 
 if __name__ == '__main__':
@@ -235,10 +281,11 @@ if __name__ == '__main__':
     #     'noop',
     #     'noop',
     #     'noop',
-    # ]
+    #]
 
     inFile = open('./inputData/day10', 'r')
     data = [line.strip() for line in inFile]
     inFile.close()
 
-    part1(data)
+    # part1(data)
+    part2(data)
