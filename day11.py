@@ -38,6 +38,7 @@ class Monkey:
         self.throwFalse = throwFalse
         self.monkeySwarm = []
         self.itemsInspected = 0
+        self.divisor = 1
 
     def inspectItems(self):
         while self.itemList:
@@ -56,7 +57,7 @@ class Monkey:
         return self.operation(worryLevel)
 
     def decreaseWorry(self, worryLevel: int) -> int:
-        return int(worryLevel / 3)
+        return worryLevel % self.divisor
 
     def throwItem(self, item):
         if self.test(item):
@@ -72,10 +73,6 @@ def playRounds(roundsToPlay: int, monkeySwarm: list[Monkey]):
     for i in range(roundsToPlay):
         for monkey in monkeySwarm:
             monkey.inspectItems()
-
-    print(f"At the end of {roundsToPlay} rounds, monkeys have...:")
-    for i, monkey in enumerate(monkeySwarm):
-        print(f"Monkey {i}: {monkey.itemList}")
 
 
 def initializeMonkeys(test = False) -> list[Monkey]:
@@ -195,6 +192,8 @@ def initializeMonkeys(test = False) -> list[Monkey]:
     # All the monkeys know about the other monkeys in their game.
     for monkey in monkeys:
         monkey.monkeySwarm = monkeys
+        # @todo refactor this to determine it automatically vs static value and pass in to monkey initializer.
+        monkey.divisor = 9699690
 
     return monkeys
 
@@ -210,6 +209,18 @@ def part1():
     print(f"Total monkey business = {inspections[0] * inspections[1]}")
 
 
+def part2():
+    monkeys = initializeMonkeys()
+    playRounds(10000, monkeys)
+
+    inspections = [monkey.itemsInspected for monkey in monkeys]
+    print(inspections)
+
+    inspections.sort(reverse=True)
+    print(f"Total monkey business = {inspections[0] * inspections[1]}")
+
+
 if __name__ == '__main__':
 
-    part1()
+    # part1()
+    part2()
