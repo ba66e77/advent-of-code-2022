@@ -76,7 +76,6 @@ class FileSystemModel:
                 size, name = item.split()
                 self._addFile(name, size)
 
-
     def processCd(self, newRelativeDirectory: str) -> None:
         match newRelativeDirectory:
             case '..':
@@ -91,8 +90,6 @@ class FileSystemModel:
 def extractCommands(inFileName: str) -> list[str]:
     inFile = open(inFileName, 'r')
     data = inFile.read()
-
-    print(data)
     inFile.close()
 
     # data = """
