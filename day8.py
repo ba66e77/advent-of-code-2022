@@ -16,12 +16,43 @@ Part 1: How many trees are visible from outside the grid?
 
 """
 
+def targetVisible(targetValue: int, comparisonSet: list[int]) -> bool:
+    """
+    Assumes comparisonSet is every tree in front of the target, not including the target.
+    :param targetValue:
+    :param comparisonSet:
+    :return:
+    """
+    m = max(comparisonSet)
+    if m < targetValue:
+        return True
+    else:
+        return False
+
+def getComparisonSet(targetPosition: tuple[int,int], direction: str, data: list[list[int]]) -> list[int]:
+
+    targetY, targetX = targetPosition
+
+    match direction:
+        case 'top':
+            comparisonSet = [x[targetX] for x in data[0:targetY]]
+        case 'bottom':
+            comparisonSet = [x[targetX] for x in data[targetY+1:]]
+        case 'right':
+            comparisonSet = data[targetY][targetX+1:]
+        case 'left':
+            comparisonSet = data[targetY][0:targetX]
+        case _:
+            raise Exception(f"Unexpected direction {direction}.")
+
+    return comparisonSet
+
 if __name__ == '__main__':
     inFile = open('./inputData/day8', 'r')
     data = [list(line.strip()) for line in inFile]
     inFile.close()
 
-    data = data[0:5]
+    visibleTreeCount = 0
 
     # build map shell
     mapgrid = []
@@ -42,14 +73,30 @@ if __name__ == '__main__':
         mapgrid[i][0] = 'V'
         mapgrid[i][-1] = 'V'
 
+    directions = ['top', 'bottom', 'left', 'right']
+
     for y in range(1, len(data)-1):
         for x in range(1, len(data[0])-1):
             target = data[y][x]
-            #top
-            comparisonSet = data[1:y+1]
 
+            for d in directions:
+                comparisonSet = getComparisonSet((y, x), d, data)
+                if targetVisible(target, comparisonSet):
+                    visibility = 'V'
+                    visibleTreeCount += 1
+                    break
+                else:
+                    visibility = 'H'
 
+            mapgrid[y][x] = visibility
 
+    print(f"Part 1: Visible tree count is {visibleTreeCount}")
 
+    cnt = 0
     for l in mapgrid:
+        cnt += l.count("V")
         print(l)
+
+    print(f"V = {cnt}")
+
+
