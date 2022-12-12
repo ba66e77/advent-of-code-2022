@@ -83,20 +83,17 @@ if __name__ == '__main__':
                 comparisonSet = getComparisonSet((y, x), d, data)
                 if targetVisible(target, comparisonSet):
                     visibility = 'V'
-                    visibleTreeCount += 1
                     break
                 else:
                     visibility = 'H'
 
             mapgrid[y][x] = visibility
 
-    print(f"Part 1: Visible tree count is {visibleTreeCount}")
-
     cnt = 0
     for l in mapgrid:
         cnt += l.count("V")
         print(l)
 
-    print(f"V = {cnt}")
+    print(f"Part 1: Visible tree count is {cnt}")
 
 
